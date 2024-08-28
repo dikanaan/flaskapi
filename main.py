@@ -9,54 +9,28 @@ app = Flask(__name__)
 
 api = Api(app)
 CORS(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
-
-basedir = os.path.dirname(os.path.abspath(__file__))
- 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "db.sqlite")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-
-
-
-
-class Voucer(db.Voucer):
-    id = db.Coloumn(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.Integer)
-
-    def save(self):
-        try:
-            db.session.add(self)
-            db.session.commit()
-            return True
-        except:
-            return True
-        
-
-db.create_all()
+data = {}
 
 
 #XXXX
 class appi(Resource):
     def get(self):
-        
-        
-       
-        return {"msg":"halo"}
+
+        response = data
+        return response
     
     def post(self):
-        dtusername = request.form["username"]
-        dtpassword = request.form["password"]
-
-
-        voucer = Voucer(username=dtusername, password=dtpassword)
-        voucer.save
-
-        response = {"msg":"berhasil input","code":200}
-        return response, 200
+        username = request.form["username"]
+        password = request.form["password"]
+        data["username"] = username
+        data["password"] = password
+        response = {"msg" : "Data dimasukan"}
+        return response
     
+    
+
+
 api.add_resource(appi, "/voucer", methods=["GET", "POST"])
 
 
